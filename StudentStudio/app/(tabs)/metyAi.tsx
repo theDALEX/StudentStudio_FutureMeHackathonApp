@@ -100,31 +100,6 @@ export default function MetyAIScreen() {
         </View>
       </ThemedView>
 
-<<<<<<< HEAD
-      {/* Quick Actions */}
-      <ThemedView style={styles.quickActionsSection}>
-        <ThemedText style={styles.sectionTitle}>Quick Help</ThemedText>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.quickActions}>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.accent }]} onPress={() => handleQuickPrompt('Ask me a question')}>
-            <IconSymbol name="questionmark.circle.fill" size={24} color="white" />
-            <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Ask Question</ThemedText>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.secondary }]} onPress={() => handleQuickPrompt('Create a study schedule')}>
-            <IconSymbol name="calendar" size={24} color="white" />
-            <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Study Plan</ThemedText>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.warning }]} onPress={() => handleQuickPrompt('Summarize this topic')}>
-            <IconSymbol name="doc.text" size={24} color="white" />
-            <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Summarize</ThemedText>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.primary }]} onPress={() => handleQuickPrompt('Explain this concept')}>
-            <IconSymbol name="lightbulb.fill" size={24} color="white" />
-            <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Explain</ThemedText>
-          </TouchableOpacity>
-        </ScrollView>
-      </ThemedView>
-=======
->>>>>>> b14e206cfd52114444beb772a8c78bd9c1babdcc
 
       {/* Chat Messages */}
       <ScrollView 
@@ -171,24 +146,6 @@ export default function MetyAIScreen() {
         ))}
       </ScrollView>
 
-<<<<<<< HEAD
-      {/* Quick Prompts */}
-      <ThemedView style={styles.promptsSection}>
-        <ThemedText style={[styles.promptsTitle, { color: colors.icon }]}>Try asking:</ThemedText>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {quickPrompts.map((prompt, index) => (
-            <TouchableOpacity 
-              key={index}
-              style={[styles.promptCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
-              onPress={() => handleQuickPrompt(prompt)}
-            >
-              <ThemedText style={[styles.promptText, { color: colors.text }]}>{prompt}</ThemedText>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </ThemedView>
-=======
->>>>>>> b14e206cfd52114444beb772a8c78bd9c1babdcc
 
       {/* Input Area */}
       <ThemedView style={[styles.inputContainer, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
