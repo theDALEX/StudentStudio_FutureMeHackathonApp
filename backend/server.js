@@ -9,8 +9,13 @@ const envPath = path.resolve(__dirname, '.env');
 console.log('Loading .env from:', envPath);
 dotenv.config({ path: envPath });
 
-// Use hardcoded API key as fallback (for testing)
-const apiKey = process.env.OPENAI_API_KEY || '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';
+// Get API key from environment only
+const apiKey = process.env.OPENAI_API_KEY;
+if (!apiKey) {
+  console.error('❌ ERROR: OPENAI_API_KEY not found in .env file!');
+  console.error('Please create a .env file with your OpenAI API key');
+  process.exit(1);
+}
 console.log('OPENAI_API_KEY loaded:', apiKey ? 'YES ✓' : 'NO ✗');
 console.log('PORT:', process.env.PORT || 5000);
 
