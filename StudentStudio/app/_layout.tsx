@@ -17,7 +17,10 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="find-friends" options={{ presentation: 'modal', headerShown:false }} />
+        <Stack.Screen name="moduleExample" options={{ presentation: 'modal', headerShown:false }} />
+        <Stack.Screen name="specificmoduleExample" options={{ presentation: 'modal', headerShown:false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+        <Stack.Screen name="events" options={{ presentation: 'modal', headerShown:false }} />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>

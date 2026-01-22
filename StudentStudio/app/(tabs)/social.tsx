@@ -38,7 +38,10 @@ export default function SocialScreen() {
             <IconSymbol name="person.badge.plus" size={24} color="white" />
             <ThemedText style={[styles.actionText, { color: 'white' }]}>Find Friends</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.actionCard, { backgroundColor: colors.warning }]}>
+          <TouchableOpacity 
+            style={[styles.actionCard, { backgroundColor: colors.warning }]}
+            onPress={() => router.push('/events')}
+          >
             <IconSymbol name="calendar" size={24} color="white" />
             <ThemedText style={[styles.actionText, { color: 'white' }]}>Events</ThemedText>
           </TouchableOpacity>

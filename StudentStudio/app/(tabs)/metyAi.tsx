@@ -1,15 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ScrollView, StyleSheet, View, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
+import { ScrollView, StyleSheet, View, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 import { chatService, ChatMessage } from '@/services/chatService';
 
 export default function MetyAIScreen() {
-  const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme ?? 'light'];
+  const colors = Colors.light; // Always use light theme
   const [message, setMessage] = useState('');
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
     {
@@ -19,9 +17,8 @@ export default function MetyAIScreen() {
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
-  const messageIdRef = useRef(chatMessages.length + 1);
 
   const quickPrompts = [
     "Help me understand calculus derivatives",
@@ -30,54 +27,92 @@ export default function MetyAIScreen() {
     "Generate practice questions for biology"
   ];
 
-  // Auto-scroll to bottom when new messages arrive
+  // Auto-scroll to bottom when new messages are added
   useEffect(() => {
-    scrollViewRef.current?.scrollToEnd({ animated: true });
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd({ animated: true });
+    }
   }, [chatMessages]);
 
-  // Handle sending message
-  const handleSendMessage = async () => {
-    if (!message.trim()) return;
+  const sendMessage = async () => {
+    if (!message.trim() || isLoading) return;
 
+    const userMessage = message.trim();
+    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
     // Add user message
-    const userMsg: ChatMessage = {
-      id: messageIdRef.current++,
+    const newUserMessage: ChatMessage = {
+      id: Date.now(),
       type: 'user',
-      message: message.trim(),
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      message: userMessage,
+      time: currentTime
     };
 
-    setChatMessages(prev => [...prev, userMsg]);
+    // Add loading message
+    const loadingMessage: ChatMessage = {
+      id: Date.now() + 1,
+      type: 'ai',
+      message: 'Thinking...',
+      time: currentTime,
+      isLoading: true
+    };
+
+    setChatMessages(prev => [...prev, newUserMessage, loadingMessage]);
     setMessage('');
-    setLoading(true);
+    setIsLoading(true);
 
-    // Send to backend
-    const result = await chatService.sendMessage(userMsg.message, chatMessages);
-
-    if (result.success && result.data) {
-      const aiMsg: ChatMessage = {
-        id: messageIdRef.current++,
-        type: 'ai',
-        message: result.data.message,
-        time: result.data.timestamp
-      };
-      setChatMessages(prev => [...prev, aiMsg]);
-    } else {
-      // Show error message
-      const errorMsg: ChatMessage = {
-        id: messageIdRef.current++,
-        type: 'ai',
-        message: result.error || 'Sorry, I encountered an error. Please try again.',
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      setChatMessages(prev => [...prev, errorMsg]);
+    try {
+      // Get AI response - the service returns a string directly
+      const aiResponse = await chatService.sendMessage(userMessage, chatMessages);
+      
+      // Replace loading message with actual response
+      setChatMessages(prev => {
+        const newMessages = [...prev];
+        const loadingIndex = newMessages.findIndex(msg => msg.isLoading);
+        if (loadingIndex !== -1) {
+          newMessages[loadingIndex] = {
+            id: Date.now() + 2,
+            type: 'ai',
+            message: aiResponse,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            isLoading: false
+          };
+        }
+        return newMessages;
+      });
+    } catch (error) {
+      console.error('Error sending message:', error);
+      
+      // Replace loading message with error message
+      setChatMessages(prev => {
+        const newMessages = [...prev];
+        const loadingIndex = newMessages.findIndex(msg => msg.isLoading);
+        if (loadingIndex !== -1) {
+          newMessages[loadingIndex] = {
+            id: Date.now() + 2,
+            type: 'ai',
+            message: "I'm having trouble connecting right now. Please try again later! 🤖",
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            isLoading: false
+          };
+        }
+        return newMessages;
+      });
+    } finally {
+      setIsLoading(false);
     }
-
-    setLoading(false);
   };
 
   const handleQuickPrompt = (prompt: string) => {
     setMessage(prompt);
+  };
+
+  const showAPIKeyInfo = () => {
+    Alert.alert(
+      "OpenAI API Setup",
+      "To enable real AI chat, you need to:\n\n1. Get an OpenAI API key from openai.com\n2. Add it to services/chatService.ts\n3. Replace 'your-openai-api-key-here' with your actual key\n\nFor now, I'll use demo responses!",
+      [{ text: "Got it!" }]
+    );
   };
 
   return (
@@ -97,44 +132,44 @@ export default function MetyAIScreen() {
               Your personal study assistant
             </ThemedText>
           </View>
-          <View style={[styles.statusIndicator, { backgroundColor: colors.secondary }]}>
-            <ThemedText style={[styles.statusText, { color: 'white' }]}>Online</ThemedText>
-          </View>
+          <TouchableOpacity 
+            style={[styles.statusIndicator, { backgroundColor: colors.secondary }]}
+            onPress={showAPIKeyInfo}
+          >
+            <ThemedText style={[styles.statusText, { color: 'white' }]}>Setup</ThemedText>
+          </TouchableOpacity>
         </View>
       </ThemedView>
 
-<<<<<<< HEAD
-      {/* Quick Actions */}
+      {/* Quick Actions 
       <ThemedView style={styles.quickActionsSection}>
         <ThemedText style={styles.sectionTitle}>Quick Help</ThemedText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.quickActions}>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.accent }]} onPress={() => handleQuickPrompt('Ask me a question')}>
+          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.secondary }]}>
             <IconSymbol name="questionmark.circle.fill" size={24} color="white" />
             <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Ask Question</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.secondary }]} onPress={() => handleQuickPrompt('Create a study schedule')}>
+          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.accent }]}>
             <IconSymbol name="calendar" size={24} color="white" />
             <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Study Plan</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.warning }]} onPress={() => handleQuickPrompt('Summarize this topic')}>
+          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.warning }]}>
             <IconSymbol name="doc.text" size={24} color="white" />
             <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Summarize</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.primary }]} onPress={() => handleQuickPrompt('Explain this concept')}>
+          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.primary }]}>
             <IconSymbol name="lightbulb.fill" size={24} color="white" />
             <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Explain</ThemedText>
           </TouchableOpacity>
         </ScrollView>
-      </ThemedView>
-=======
->>>>>>> b14e206cfd52114444beb772a8c78bd9c1babdcc
+      </ThemedView>*/}
 
       {/* Chat Messages */}
       <ScrollView 
         ref={scrollViewRef}
         style={styles.chatContainer} 
         showsVerticalScrollIndicator={false}
-        onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
+        contentContainerStyle={styles.chatContent}
       >
         {chatMessages.map((msg) => (
           <View key={msg.id} style={[
@@ -154,7 +189,8 @@ export default function MetyAIScreen() {
             ]}>
               <ThemedText style={[
                 styles.messageText,
-                { color: msg.type === 'user' ? 'white' : colors.text }
+                { color: msg.type === 'user' ? 'white' : colors.text },
+                msg.isLoading && { fontStyle: 'italic', opacity: 0.7 }
               ]}>
                 {msg.message}
               </ThemedText>
@@ -174,24 +210,21 @@ export default function MetyAIScreen() {
         ))}
       </ScrollView>
 
-<<<<<<< HEAD
-      {/* Quick Prompts */}
+      {/* Quick Prompts 
       <ThemedView style={styles.promptsSection}>
         <ThemedText style={[styles.promptsTitle, { color: colors.icon }]}>Try asking:</ThemedText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {quickPrompts.map((prompt, index) => (
             <TouchableOpacity 
               key={index}
-              style={[styles.promptCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
+              style={[styles.promptCard, { backgroundColor: colors.lightAccent, borderColor: colors.border }]}
               onPress={() => handleQuickPrompt(prompt)}
             >
               <ThemedText style={[styles.promptText, { color: colors.text }]}>{prompt}</ThemedText>
             </TouchableOpacity>
           ))}
         </ScrollView>
-      </ThemedView>
-=======
->>>>>>> b14e206cfd52114444beb772a8c78bd9c1babdcc
+      </ThemedView>*/}
 
       {/* Input Area */}
       <ThemedView style={[styles.inputContainer, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
@@ -203,18 +236,21 @@ export default function MetyAIScreen() {
             value={message}
             onChangeText={setMessage}
             multiline
-            editable={!loading}
+            maxLength={500}
+            editable={!isLoading}
           />
           <TouchableOpacity 
-            style={[styles.sendButton, { backgroundColor: loading ? colors.icon : colors.primary }]}
-            onPress={handleSendMessage}
-            disabled={loading || !message.trim()}
+            style={[
+              styles.sendButton, 
+              { 
+                backgroundColor: message.trim() && !isLoading ? colors.primary : colors.icon,
+                opacity: message.trim() && !isLoading ? 1 : 0.5
+              }
+            ]}
+            onPress={sendMessage}
+            disabled={!message.trim() || isLoading}
           >
-            {loading ? (
-              <ActivityIndicator color="white" size="small" />
-            ) : (
-              <IconSymbol name="paperplane.fill" size={20} color="white" />
-            )}
+            <IconSymbol name="paperplane.fill" size={20} color="white" />
           </TouchableOpacity>
         </View>
       </ThemedView>
@@ -293,6 +329,9 @@ const styles = StyleSheet.create({
   chatContainer: {
     flex: 1,
     paddingHorizontal: 20,
+  },
+  chatContent: {
+    paddingBottom: 20,
   },
   messageContainer: {
     flexDirection: 'row',
