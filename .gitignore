@@ -1,0 +1,14 @@
+.DS_Store
+node_modules/
+.env
+.env.local
+.env.*.local
+*.log
+.idea/
+.vscode/
+*.swp
+*.swo
+StudentStudio/.env
+StudentStudio/.env.*
+backend/.env
+backend/.env.*
