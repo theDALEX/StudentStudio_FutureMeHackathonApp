@@ -4,9 +4,14 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
+import { router } from 'expo-router';
 
 export default function SocialScreen() {
   const colors = Colors.light; // Always use light theme
+
+  const handleFindFriends = () => {
+    router.push('/find-friends');
+  };
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
@@ -26,7 +31,10 @@ export default function SocialScreen() {
             <IconSymbol name="plus.circle.fill" size={24} color="white" />
             <ThemedText style={[styles.actionText, { color: 'white' }]}>New Post</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.actionCard, { backgroundColor: colors.accent }]}>
+          <TouchableOpacity 
+            style={[styles.actionCard, { backgroundColor: colors.accent }]}
+            onPress={handleFindFriends}
+          >
             <IconSymbol name="person.badge.plus" size={24} color="white" />
             <ThemedText style={[styles.actionText, { color: 'white' }]}>Find Friends</ThemedText>
           </TouchableOpacity>

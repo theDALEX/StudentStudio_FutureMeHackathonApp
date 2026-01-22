@@ -14,10 +14,68 @@ type IconSymbolName = keyof typeof MAPPING;
  * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
  */
 const MAPPING = {
+  // Navigation icons
   'house.fill': 'home',
   'paperplane.fill': 'send',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
+  'chevron.left': 'chevron-left',
+  'chevron.down': 'keyboard-arrow-down',
+  
+  // Study Hub icons
+  'book.fill': 'book',
+  'brain.head.profile': 'psychology',
+  'person.3.fill': 'group',
+  'timer': 'timer',
+  'note.text': 'note',
+  'calendar.badge.plus': 'event',
+  'laptopcomputer': 'computer',
+  'function': 'functions',
+  'atom': 'science',
+  'checkmark.circle': 'check-circle',
+  'doc.text.fill': 'description',
+  'play.circle.fill': 'play-circle-filled',
+  'questionmark.circle.fill': 'help',
+  'person.2.fill': 'group',
+  
+  // Mety AI icons
+  'calendar': 'event',
+  'doc.text': 'description',
+  'lightbulb.fill': 'lightbulb',
+  'person.fill': 'person',
+  
+  // Social icons
+  'plus.circle.fill': 'add-circle',
+  'person.badge.plus': 'person-add',
+  'heart': 'favorite-border',
+  'heart.fill': 'favorite',
+  'message': 'message',
+  'square.and.arrow.up': 'share',
+  'figure.run': 'directions-run',
+  'music.note': 'music-note',
+  
+  // Find Friends icons
+  'magnifyingglass': 'search',
+  'ellipsis': 'more-vert',
+  'xmark': 'close',
+  
+  // Profile icons
+  'person.circle.fill': 'account-circle',
+  'gear': 'settings',
+  'bell': 'notifications',
+  'shield.checkered': 'security',
+  'questionmark.circle': 'help-outline',
+  'info.circle': 'info-outline',
+  'arrow.right.square': 'logout',
+  'star.fill': 'star',
+  'trophy.fill': 'emoji-events',
+  'chart.bar.fill': 'bar-chart',
+  'pencil': 'edit',
+  
+  // Hobbies icons
+  'camera.fill': 'camera-alt',
+  'gamecontroller.fill': 'sports-esports',
+  'airplane': 'flight',
 } as IconMapping;
 
 /**

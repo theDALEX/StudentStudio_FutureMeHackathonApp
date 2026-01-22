@@ -60,28 +60,6 @@ export default function MetyAIScreen() {
         </View>
       </ThemedView>
 
-      {/* Quick Actions */}
-      <ThemedView style={styles.quickActionsSection}>
-        <ThemedText style={styles.sectionTitle}>Quick Help</ThemedText>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.quickActions}>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.secondary }]}>
-            <IconSymbol name="questionmark.circle.fill" size={24} color="white" />
-            <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Ask Question</ThemedText>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.accent }]}>
-            <IconSymbol name="calendar" size={24} color="white" />
-            <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Study Plan</ThemedText>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.warning }]}>
-            <IconSymbol name="doc.text" size={24} color="white" />
-            <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Summarize</ThemedText>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.primary }]}>
-            <IconSymbol name="lightbulb.fill" size={24} color="white" />
-            <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Explain</ThemedText>
-          </TouchableOpacity>
-        </ScrollView>
-      </ThemedView>
 
       {/* Chat Messages */}
       <ScrollView style={styles.chatContainer} showsVerticalScrollIndicator={false}>
@@ -123,21 +101,6 @@ export default function MetyAIScreen() {
         ))}
       </ScrollView>
 
-      {/* Quick Prompts */}
-      <ThemedView style={styles.promptsSection}>
-        <ThemedText style={[styles.promptsTitle, { color: colors.icon }]}>Try asking:</ThemedText>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {quickPrompts.map((prompt, index) => (
-            <TouchableOpacity 
-              key={index}
-              style={[styles.promptCard, { backgroundColor: colors.lightAccent, borderColor: colors.border }]}
-              onPress={() => setMessage(prompt)}
-            >
-              <ThemedText style={[styles.promptText, { color: colors.text }]}>{prompt}</ThemedText>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </ThemedView>
 
       {/* Input Area */}
       <ThemedView style={[styles.inputContainer, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
