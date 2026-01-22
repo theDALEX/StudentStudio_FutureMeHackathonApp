@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Get Gemini API key from environment
-const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY || 'AIzaSyC5VVzGAZyLAsQF-4mONYvN_oWDtSXtqlI';
+const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY!;
 
 export interface ChatMessage {
   id: number;
