@@ -4,11 +4,14 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { router } from 'expo-router';
 
 export default function SocialScreen() {
-  const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme ?? 'light'];
+  const colors = Colors.light; // Always use light theme
+
+  const handleFindFriends = () => {
+    router.push('/find-friends');
+  };
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
@@ -24,11 +27,14 @@ export default function SocialScreen() {
       <ThemedView style={styles.section}>
         <ThemedText style={styles.sectionTitle}>Quick Actions</ThemedText>
         <View style={styles.quickActions}>
-          <TouchableOpacity style={[styles.actionCard, { backgroundColor: colors.accent }]}>
+          <TouchableOpacity style={[styles.actionCard, { backgroundColor: colors.secondary }]}>
             <IconSymbol name="plus.circle.fill" size={24} color="white" />
             <ThemedText style={[styles.actionText, { color: 'white' }]}>New Post</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.actionCard, { backgroundColor: colors.secondary }]}>
+          <TouchableOpacity 
+            style={[styles.actionCard, { backgroundColor: colors.accent }]}
+            onPress={handleFindFriends}
+          >
             <IconSymbol name="person.badge.plus" size={24} color="white" />
             <ThemedText style={[styles.actionText, { color: 'white' }]}>Find Friends</ThemedText>
           </TouchableOpacity>
@@ -44,7 +50,7 @@ export default function SocialScreen() {
         <ThemedText style={styles.sectionTitle}>University Feed</ThemedText>
         
         {/* Sample Posts */}
-        <View style={[styles.postCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.postCard, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
           <View style={styles.postHeader}>
             <View style={[styles.avatar, { backgroundColor: colors.primary }]}>
               <ThemedText style={{ color: 'white', fontWeight: 'bold' }}>JS</ThemedText>
@@ -72,7 +78,7 @@ export default function SocialScreen() {
           </View>
         </View>
 
-        <View style={[styles.postCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.postCard, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
           <View style={styles.postHeader}>
             <View style={[styles.avatar, { backgroundColor: colors.secondary }]}>
               <ThemedText style={{ color: 'white', fontWeight: 'bold' }}>EM</ThemedText>
@@ -111,13 +117,13 @@ export default function SocialScreen() {
             <ThemedText style={[styles.groupMembers, { color: 'rgba(255,255,255,0.8)' }]}>234 members</ThemedText>
           </TouchableOpacity>
           
-          <TouchableOpacity style={[styles.groupCard, { backgroundColor: colors.accent }]}>
+          <TouchableOpacity style={[styles.groupCard, { backgroundColor: colors.secondary }]}>
             <IconSymbol name="figure.run" size={32} color="white" />
             <ThemedText style={[styles.groupName, { color: 'white' }]}>Running Club</ThemedText>
             <ThemedText style={[styles.groupMembers, { color: 'rgba(255,255,255,0.8)' }]}>89 members</ThemedText>
           </TouchableOpacity>
           
-          <TouchableOpacity style={[styles.groupCard, { backgroundColor: colors.warning }]}>
+          <TouchableOpacity style={[styles.groupCard, { backgroundColor: colors.accent }]}>
             <IconSymbol name="music.note" size={32} color="white" />
             <ThemedText style={[styles.groupName, { color: 'white' }]}>Music Society</ThemedText>
             <ThemedText style={[styles.groupMembers, { color: 'rgba(255,255,255,0.8)' }]}>156 members</ThemedText>

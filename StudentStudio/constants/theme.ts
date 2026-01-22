@@ -5,37 +5,43 @@
 
 import { Platform } from 'react-native';
 
-const tintColorLight = '#6366f1';
-const tintColorDark = '#a855f7';
+const primaryBlue = '#3b82f6';
+const lightBlue = '#60a5fa';
+const veryLightBlue = '#dbeafe';
+const paleBlue = '#eff6ff';
 
 export const Colors = {
   light: {
     text: '#1f2937',
     background: '#ffffff',
-    tint: tintColorLight,
+    tint: primaryBlue,
     icon: '#6b7280',
     tabIconDefault: '#9ca3af',
-    tabIconSelected: tintColorLight,
-    primary: '#6366f1',
-    secondary: '#ec4899',
-    accent: '#10b981',
-    warning: '#f59e0b',
-    surface: '#f9fafb',
+    tabIconSelected: primaryBlue,
+    primary: primaryBlue,
+    secondary: lightBlue,
+    accent: '#60a5fa',
+    warning: '#93c5fd',
+    surface: paleBlue,
     border: '#e5e7eb',
+    cardBackground: '#ffffff',
+    lightAccent: veryLightBlue,
   },
   dark: {
-    text: '#f9fafb',
-    background: '#111827',
-    tint: tintColorDark,
-    icon: '#9ca3af',
-    tabIconDefault: '#6b7280',
-    tabIconSelected: tintColorDark,
-    primary: '#a855f7',
-    secondary: '#f472b6',
-    accent: '#34d399',
-    warning: '#fbbf24',
-    surface: '#1f2937',
-    border: '#374151',
+    text: '#1f2937',
+    background: '#ffffff',
+    tint: primaryBlue,
+    icon: '#6b7280',
+    tabIconDefault: '#9ca3af',
+    tabIconSelected: primaryBlue,
+    primary: primaryBlue,
+    secondary: lightBlue,
+    accent: '#60a5fa',
+    warning: '#93c5fd',
+    surface: paleBlue,
+    border: '#e5e7eb',
+    cardBackground: '#ffffff',
+    lightAccent: veryLightBlue,
   },
 };
 

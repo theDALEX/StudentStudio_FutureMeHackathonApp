@@ -97,12 +97,13 @@ export default function MetyAIScreen() {
               Your personal study assistant
             </ThemedText>
           </View>
-          <View style={[styles.statusIndicator, { backgroundColor: colors.accent }]}>
+          <View style={[styles.statusIndicator, { backgroundColor: colors.secondary }]}>
             <ThemedText style={[styles.statusText, { color: 'white' }]}>Online</ThemedText>
           </View>
         </View>
       </ThemedView>
 
+<<<<<<< HEAD
       {/* Quick Actions */}
       <ThemedView style={styles.quickActionsSection}>
         <ThemedText style={styles.sectionTitle}>Quick Help</ThemedText>
@@ -125,6 +126,8 @@ export default function MetyAIScreen() {
           </TouchableOpacity>
         </ScrollView>
       </ThemedView>
+=======
+>>>>>>> b14e206cfd52114444beb772a8c78bd9c1babdcc
 
       {/* Chat Messages */}
       <ScrollView 
@@ -147,7 +150,7 @@ export default function MetyAIScreen() {
               styles.messageBubble,
               msg.type === 'user' 
                 ? { backgroundColor: colors.primary } 
-                : { backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 }
+                : { backgroundColor: colors.cardBackground, borderColor: colors.border, borderWidth: 1 }
             ]}>
               <ThemedText style={[
                 styles.messageText,
@@ -171,6 +174,7 @@ export default function MetyAIScreen() {
         ))}
       </ScrollView>
 
+<<<<<<< HEAD
       {/* Quick Prompts */}
       <ThemedView style={styles.promptsSection}>
         <ThemedText style={[styles.promptsTitle, { color: colors.icon }]}>Try asking:</ThemedText>
@@ -186,10 +190,12 @@ export default function MetyAIScreen() {
           ))}
         </ScrollView>
       </ThemedView>
+=======
+>>>>>>> b14e206cfd52114444beb772a8c78bd9c1babdcc
 
       {/* Input Area */}
       <ThemedView style={[styles.inputContainer, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
-        <View style={[styles.inputWrapper, { backgroundColor: colors.background, borderColor: colors.border }]}>
+        <View style={[styles.inputWrapper, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
           <TextInput
             style={[styles.textInput, { color: colors.text }]}
             placeholder="Ask Mety anything about your studies..."
