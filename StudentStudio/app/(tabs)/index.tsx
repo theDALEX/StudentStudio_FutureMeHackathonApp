@@ -4,6 +4,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
+import { router } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
@@ -59,13 +60,16 @@ export default function StudyHubScreen() {
       <ThemedView style={styles.section}>
         <ThemedText style={styles.sectionTitle}>Your Courses</ThemedText>
         
-        <TouchableOpacity style={[styles.courseCard, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
+        <TouchableOpacity 
+          onPress={() => router.push('/moduleExample')} 
+          style={[styles.courseCard, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}
+        >
           <View style={styles.courseHeader}>
             <View style={[styles.courseIcon, { backgroundColor: colors.primary }]}>
               <IconSymbol name="laptopcomputer" size={24} color="white" />
             </View>
             <View style={styles.courseInfo}>
-              <ThemedText style={styles.courseName}>Computer Science 301</ThemedText>
+              <ThemedText style={styles.courseName}>Computer Science 2024</ThemedText>
               <ThemedText style={[styles.courseInstructor, { color: colors.icon }]}>Prof. Johnson • MWF 10:00 AM</ThemedText>
             </View>
             <View style={[styles.progressBadge, { backgroundColor: colors.secondary }]}>
@@ -84,13 +88,16 @@ export default function StudyHubScreen() {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.courseCard, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
+        <TouchableOpacity 
+          onPress={() => {router.push('/moduleExample'), console.log("jsbdjkdbbjk")}} 
+          style={[styles.courseCard, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}
+        >
           <View style={styles.courseHeader}>
             <View style={[styles.courseIcon, { backgroundColor: colors.secondary }]}>
-              <IconSymbol name="function" size={24} color="white" />
+              <IconSymbol name="laptopcomputer" size={24} color="white" />
             </View>
             <View style={styles.courseInfo}>
-              <ThemedText style={styles.courseName}>Calculus II</ThemedText>
+              <ThemedText style={styles.courseName}>Computer Science 2023</ThemedText>
               <ThemedText style={[styles.courseInstructor, { color: colors.icon }]}>Prof. Smith • TTh 2:00 PM</ThemedText>
             </View>
             <View style={[styles.progressBadge, { backgroundColor: colors.accent }]}>
@@ -109,13 +116,16 @@ export default function StudyHubScreen() {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.courseCard, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
+        <TouchableOpacity 
+          onPress={() => router.push('/moduleExample')} 
+          style={[styles.courseCard, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}
+        >
           <View style={styles.courseHeader}>
             <View style={[styles.courseIcon, { backgroundColor: colors.accent }]}>
-              <IconSymbol name="atom" size={24} color="white" />
+              <IconSymbol name="laptopcomputer" size={24} color="white" />
             </View>
             <View style={styles.courseInfo}>
-              <ThemedText style={styles.courseName}>Physics 201</ThemedText>
+              <ThemedText style={styles.courseName}>Computer Science 2022</ThemedText>
               <ThemedText style={[styles.courseInstructor, { color: colors.icon }]}>Prof. Davis • MWF 1:00 PM</ThemedText>
             </View>
             <View style={[styles.progressBadge, { backgroundColor: colors.warning }]}>

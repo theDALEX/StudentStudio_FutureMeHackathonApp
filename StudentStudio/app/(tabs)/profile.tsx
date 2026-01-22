@@ -1,6 +1,5 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
-import { Image } from 'expo-image';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -44,13 +43,9 @@ export default function ProfileScreen() {
       <ThemedView style={[styles.header, { backgroundColor: colors.primary }]}>
         <View style={styles.profileSection}>
           <View style={styles.profileAvatarContainer}>
-            <Image
-            
-              source={{ uri: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face' }}
-              style={styles.profileAvatar}
-              contentFit="cover"
-              placeholder={{ uri: 'https://via.placeholder.com/150x150/3b82f6/ffffff?text=JD' }}
-            />
+            <View style={[styles.profileAvatar, { backgroundColor: 'rgba(255,255,255,0.2)' }]}>
+              <ThemedText style={[styles.avatarText, { color: 'white' }]}>JD</ThemedText>
+            </View>
             <View style={[styles.onlineIndicator, { backgroundColor: '#10b981' }]} />
           </View>
           <View style={styles.profileInfo}>
@@ -171,6 +166,8 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     borderWidth: 3,
     borderColor: 'rgba(255,255,255,0.3)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   onlineIndicator: {
     position: 'absolute',

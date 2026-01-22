@@ -1,9 +1,7 @@
-// OpenAI API configuration
-const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// You'll need to add your OpenAI API key here
-// For production, store this in environment variables or secure storage
-const OPENAI_API_KEY = 'your-openai-api-key-here';
+// Get Gemini API key from environment
+const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY || 'AIzaSyC5VVzGAZyLAsQF-4mONYvN_oWDtSXtqlI';
 
 export interface ChatMessage {
   id: number;
@@ -11,11 +9,6 @@ export interface ChatMessage {
   message: string;
   time: string;
   isLoading?: boolean;
-}
-
-export interface OpenAIMessage {
-  role: 'system' | 'user' | 'assistant';
-  content: string;
 }
 
 class ChatService {
@@ -29,65 +22,50 @@ class ChatService {
 
 Keep your responses helpful, encouraging, and student-focused. Use emojis occasionally to make conversations friendly.`;
 
+  private genAI: GoogleGenerativeAI;
+
+  constructor() {
+    this.genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+  }
+
   async sendMessage(userMessage: string, conversationHistory: ChatMessage[] = []): Promise<string> {
-    // Check if API key is configured
-    if (OPENAI_API_KEY === 'your-openai-api-key-here') {
-      // Use demo responses when API key is not configured
-      return this.generateDemoResponse(userMessage);
-    }
-
     try {
-      // Convert chat history to OpenAI format
-      const messages: OpenAIMessage[] = [
-        { role: 'system', content: this.systemPrompt }
-      ];
+      // Get the Gemini model
+      const model = this.genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
 
-      // Add conversation history (last 10 messages to avoid token limits)
+      // Build conversation context
+      let conversationContext = this.systemPrompt + "\n\n";
+
+      // Add conversation history for context (last 10 messages to avoid token limits)
       const recentHistory = conversationHistory.slice(-10);
-      recentHistory.forEach(msg => {
-        if (msg.type === 'user') {
-          messages.push({ role: 'user', content: msg.message });
-        } else if (msg.type === 'ai' && !msg.isLoading) {
-          messages.push({ role: 'assistant', content: msg.message });
-        }
-      });
-
-      // Add current user message
-      messages.push({ role: 'user', content: userMessage });
-
-      const response = await fetch(OPENAI_API_URL, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${OPENAI_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
-          messages: messages,
-          max_tokens: 500,
-          temperature: 0.7,
-          stream: false,
-        }),
-      });
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          return "I'm sorry, but there's an authentication issue with my AI service. Please check the API key configuration.";
-        } else if (response.status === 429) {
-          return "I'm currently experiencing high demand. Please try again in a moment! 😅";
-        }
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (recentHistory.length > 0) {
+        conversationContext += "Previous conversation:\n";
+        recentHistory.forEach(msg => {
+          if (!msg.isLoading) {
+            conversationContext += `${msg.type === 'user' ? 'Student' : 'Mety'}: ${msg.message}\n`;
+          }
+        });
+        conversationContext += "\n";
       }
 
-      const data = await response.json();
+      conversationContext += `Student: ${userMessage}\nMety:`;
 
-      if (data?.choices?.[0]?.message?.content) {
-        return data.choices[0].message.content.trim();
-      } else {
-        throw new Error('Invalid response from OpenAI');
-      }
+      // Generate response
+      const result = await model.generateContent(conversationContext);
+      const response = await result.response;
+      const aiResponse = response.text();
+
+      return aiResponse.trim();
+
     } catch (error: any) {
       console.error('Chat service error:', error);
+
+      if (error.message?.includes('API_KEY')) {
+        return "I'm sorry, but there's an issue with my AI service configuration. Please check the API key.";
+      } else if (error.message?.includes('quota') || error.message?.includes('limit')) {
+        return "I'm currently experiencing high demand. Please try again in a moment! 😅";
+      }
+
       return "I'm having trouble connecting right now. Please try again later! 🤖";
     }
   }

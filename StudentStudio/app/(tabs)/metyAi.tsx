@@ -141,7 +141,7 @@ export default function MetyAIScreen() {
         </View>
       </ThemedView>
 
-      {/* Quick Actions */}
+      {/* Quick Actions 
       <ThemedView style={styles.quickActionsSection}>
         <ThemedText style={styles.sectionTitle}>Quick Help</ThemedText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.quickActions}>
@@ -162,7 +162,7 @@ export default function MetyAIScreen() {
             <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Explain</ThemedText>
           </TouchableOpacity>
         </ScrollView>
-      </ThemedView>
+      </ThemedView>*/}
 
       {/* Chat Messages */}
       <ScrollView 
@@ -210,7 +210,7 @@ export default function MetyAIScreen() {
         ))}
       </ScrollView>
 
-      {/* Quick Prompts */}
+      {/* Quick Prompts 
       <ThemedView style={styles.promptsSection}>
         <ThemedText style={[styles.promptsTitle, { color: colors.icon }]}>Try asking:</ThemedText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -224,7 +224,7 @@ export default function MetyAIScreen() {
             </TouchableOpacity>
           ))}
         </ScrollView>
-      </ThemedView>
+      </ThemedView>*/}
 
       {/* Input Area */}
       <ThemedView style={[styles.inputContainer, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
