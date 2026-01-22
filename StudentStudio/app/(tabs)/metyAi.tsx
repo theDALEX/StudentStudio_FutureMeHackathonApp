@@ -54,9 +54,6 @@ export default function MetyAIScreen() {
               Your personal study assistant
             </ThemedText>
           </View>
-          <View style={[styles.statusIndicator, { backgroundColor: colors.secondary }]}>
-            <ThemedText style={[styles.statusText, { color: 'white' }]}>Online</ThemedText>
-          </View>
         </View>
       </ThemedView>
 
