@@ -4,13 +4,11 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 
 const { width } = Dimensions.get('window');
 
 export default function StudyHubScreen() {
-  const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme ?? 'light'];
+  const colors = Colors.light; // Always use light theme
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
@@ -42,11 +40,11 @@ export default function StudyHubScreen() {
       <ThemedView style={styles.section}>
         <ThemedText style={styles.sectionTitle}>Quick Study Tools</ThemedText>
         <View style={styles.quickActions}>
-          <TouchableOpacity style={[styles.actionCard, { backgroundColor: colors.accent }]}>
+          <TouchableOpacity style={[styles.actionCard, { backgroundColor: colors.secondary }]}>
             <IconSymbol name="timer" size={28} color="white" />
             <ThemedText style={[styles.actionText, { color: 'white' }]}>Pomodoro</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.actionCard, { backgroundColor: colors.secondary }]}>
+          <TouchableOpacity style={[styles.actionCard, { backgroundColor: colors.accent }]}>
             <IconSymbol name="note.text" size={28} color="white" />
             <ThemedText style={[styles.actionText, { color: 'white' }]}>Notes</ThemedText>
           </TouchableOpacity>
@@ -61,7 +59,7 @@ export default function StudyHubScreen() {
       <ThemedView style={styles.section}>
         <ThemedText style={styles.sectionTitle}>Your Courses</ThemedText>
         
-        <TouchableOpacity style={[styles.courseCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <TouchableOpacity style={[styles.courseCard, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
           <View style={styles.courseHeader}>
             <View style={[styles.courseIcon, { backgroundColor: colors.primary }]}>
               <IconSymbol name="laptopcomputer" size={24} color="white" />
@@ -70,23 +68,23 @@ export default function StudyHubScreen() {
               <ThemedText style={styles.courseName}>Computer Science 301</ThemedText>
               <ThemedText style={[styles.courseInstructor, { color: colors.icon }]}>Prof. Johnson • MWF 10:00 AM</ThemedText>
             </View>
-            <View style={[styles.progressBadge, { backgroundColor: colors.accent }]}>
+            <View style={[styles.progressBadge, { backgroundColor: colors.secondary }]}>
               <ThemedText style={[styles.progressText, { color: 'white' }]}>85%</ThemedText>
             </View>
           </View>
           <View style={styles.courseActions}>
-            <TouchableOpacity style={[styles.courseActionBtn, { backgroundColor: colors.primary + '20' }]}>
+            <TouchableOpacity style={[styles.courseActionBtn, { backgroundColor: colors.lightAccent }]}>
               <IconSymbol name="book.fill" size={16} color={colors.primary} />
               <ThemedText style={[styles.courseActionText, { color: colors.primary }]}>Materials</ThemedText>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.courseActionBtn, { backgroundColor: colors.secondary + '20' }]}>
+            <TouchableOpacity style={[styles.courseActionBtn, { backgroundColor: colors.lightAccent }]}>
               <IconSymbol name="checkmark.circle" size={16} color={colors.secondary} />
               <ThemedText style={[styles.courseActionText, { color: colors.secondary }]}>Assignments</ThemedText>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.courseCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <TouchableOpacity style={[styles.courseCard, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
           <View style={styles.courseHeader}>
             <View style={[styles.courseIcon, { backgroundColor: colors.secondary }]}>
               <IconSymbol name="function" size={24} color="white" />
@@ -95,23 +93,23 @@ export default function StudyHubScreen() {
               <ThemedText style={styles.courseName}>Calculus II</ThemedText>
               <ThemedText style={[styles.courseInstructor, { color: colors.icon }]}>Prof. Smith • TTh 2:00 PM</ThemedText>
             </View>
-            <View style={[styles.progressBadge, { backgroundColor: colors.warning }]}>
+            <View style={[styles.progressBadge, { backgroundColor: colors.accent }]}>
               <ThemedText style={[styles.progressText, { color: 'white' }]}>92%</ThemedText>
             </View>
           </View>
           <View style={styles.courseActions}>
-            <TouchableOpacity style={[styles.courseActionBtn, { backgroundColor: colors.primary + '20' }]}>
+            <TouchableOpacity style={[styles.courseActionBtn, { backgroundColor: colors.lightAccent }]}>
               <IconSymbol name="book.fill" size={16} color={colors.primary} />
               <ThemedText style={[styles.courseActionText, { color: colors.primary }]}>Materials</ThemedText>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.courseActionBtn, { backgroundColor: colors.secondary + '20' }]}>
+            <TouchableOpacity style={[styles.courseActionBtn, { backgroundColor: colors.lightAccent }]}>
               <IconSymbol name="checkmark.circle" size={16} color={colors.secondary} />
               <ThemedText style={[styles.courseActionText, { color: colors.secondary }]}>Assignments</ThemedText>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.courseCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <TouchableOpacity style={[styles.courseCard, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
           <View style={styles.courseHeader}>
             <View style={[styles.courseIcon, { backgroundColor: colors.accent }]}>
               <IconSymbol name="atom" size={24} color="white" />
@@ -120,16 +118,16 @@ export default function StudyHubScreen() {
               <ThemedText style={styles.courseName}>Physics 201</ThemedText>
               <ThemedText style={[styles.courseInstructor, { color: colors.icon }]}>Prof. Davis • MWF 1:00 PM</ThemedText>
             </View>
-            <View style={[styles.progressBadge, { backgroundColor: colors.primary }]}>
+            <View style={[styles.progressBadge, { backgroundColor: colors.warning }]}>
               <ThemedText style={[styles.progressText, { color: 'white' }]}>78%</ThemedText>
             </View>
           </View>
           <View style={styles.courseActions}>
-            <TouchableOpacity style={[styles.courseActionBtn, { backgroundColor: colors.primary + '20' }]}>
+            <TouchableOpacity style={[styles.courseActionBtn, { backgroundColor: colors.lightAccent }]}>
               <IconSymbol name="book.fill" size={16} color={colors.primary} />
               <ThemedText style={[styles.courseActionText, { color: colors.primary }]}>Materials</ThemedText>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.courseActionBtn, { backgroundColor: colors.secondary + '20' }]}>
+            <TouchableOpacity style={[styles.courseActionBtn, { backgroundColor: colors.lightAccent }]}>
               <IconSymbol name="checkmark.circle" size={16} color={colors.secondary} />
               <ThemedText style={[styles.courseActionText, { color: colors.secondary }]}>Assignments</ThemedText>
             </TouchableOpacity>

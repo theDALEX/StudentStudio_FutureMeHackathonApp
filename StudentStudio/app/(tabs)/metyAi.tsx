@@ -4,11 +4,9 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function MetyAIScreen() {
-  const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme ?? 'light'];
+  const colors = Colors.light; // Always use light theme
   const [message, setMessage] = useState('');
 
   const quickPrompts = [
@@ -56,7 +54,7 @@ export default function MetyAIScreen() {
               Your personal study assistant
             </ThemedText>
           </View>
-          <View style={[styles.statusIndicator, { backgroundColor: colors.accent }]}>
+          <View style={[styles.statusIndicator, { backgroundColor: colors.secondary }]}>
             <ThemedText style={[styles.statusText, { color: 'white' }]}>Online</ThemedText>
           </View>
         </View>
@@ -66,11 +64,11 @@ export default function MetyAIScreen() {
       <ThemedView style={styles.quickActionsSection}>
         <ThemedText style={styles.sectionTitle}>Quick Help</ThemedText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.quickActions}>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.accent }]}>
+          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.secondary }]}>
             <IconSymbol name="questionmark.circle.fill" size={24} color="white" />
             <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Ask Question</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.secondary }]}>
+          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.accent }]}>
             <IconSymbol name="calendar" size={24} color="white" />
             <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Study Plan</ThemedText>
           </TouchableOpacity>
@@ -101,7 +99,7 @@ export default function MetyAIScreen() {
               styles.messageBubble,
               msg.type === 'user' 
                 ? { backgroundColor: colors.primary } 
-                : { backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 }
+                : { backgroundColor: colors.cardBackground, borderColor: colors.border, borderWidth: 1 }
             ]}>
               <ThemedText style={[
                 styles.messageText,
@@ -132,7 +130,7 @@ export default function MetyAIScreen() {
           {quickPrompts.map((prompt, index) => (
             <TouchableOpacity 
               key={index}
-              style={[styles.promptCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
+              style={[styles.promptCard, { backgroundColor: colors.lightAccent, borderColor: colors.border }]}
               onPress={() => setMessage(prompt)}
             >
               <ThemedText style={[styles.promptText, { color: colors.text }]}>{prompt}</ThemedText>
@@ -143,7 +141,7 @@ export default function MetyAIScreen() {
 
       {/* Input Area */}
       <ThemedView style={[styles.inputContainer, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
-        <View style={[styles.inputWrapper, { backgroundColor: colors.background, borderColor: colors.border }]}>
+        <View style={[styles.inputWrapper, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
           <TextInput
             style={[styles.textInput, { color: colors.text }]}
             placeholder="Ask Mety anything about your studies..."
