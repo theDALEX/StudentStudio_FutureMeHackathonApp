@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
-import { ScrollView, StyleSheet, View, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { ScrollView, StyleSheet, View, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { chatService, ChatMessage } from '@/services/chatService';
 
 export default function MetyAIScreen() {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
   const [message, setMessage] = useState('');
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
+    {
+      id: 1,
+      type: 'ai',
+      message: "Hi! I'm Mety, your personal AI study assistant! 🤖 How can I help you with your studies today?",
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }
+  ]);
+  const [loading, setLoading] = useState(false);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const messageIdRef = useRef(chatMessages.length + 1);
 
   const quickPrompts = [
     "Help me understand calculus derivatives",
@@ -18,26 +30,55 @@ export default function MetyAIScreen() {
     "Generate practice questions for biology"
   ];
 
-  const chatMessages = [
-    {
-      id: 1,
-      type: 'ai',
-      message: "Hi! I'm Mety, your personal AI study assistant! 🤖 How can I help you with your studies today?",
-      time: '10:30 AM'
-    },
-    {
-      id: 2,
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+  }, [chatMessages]);
+
+  // Handle sending message
+  const handleSendMessage = async () => {
+    if (!message.trim()) return;
+
+    // Add user message
+    const userMsg: ChatMessage = {
+      id: messageIdRef.current++,
       type: 'user',
-      message: "Can you help me understand photosynthesis?",
-      time: '10:32 AM'
-    },
-    {
-      id: 3,
-      type: 'ai',
-      message: "Absolutely! Photosynthesis is the process plants use to convert sunlight into energy. It happens in two main stages:\n\n1. Light-dependent reactions (in thylakoids)\n2. Light-independent reactions (Calvin cycle)\n\nWould you like me to explain each stage in detail? 🌱",
-      time: '10:32 AM'
+      message: message.trim(),
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    setChatMessages(prev => [...prev, userMsg]);
+    setMessage('');
+    setLoading(true);
+
+    // Send to backend
+    const result = await chatService.sendMessage(userMsg.message, chatMessages);
+
+    if (result.success && result.data) {
+      const aiMsg: ChatMessage = {
+        id: messageIdRef.current++,
+        type: 'ai',
+        message: result.data.message,
+        time: result.data.timestamp
+      };
+      setChatMessages(prev => [...prev, aiMsg]);
+    } else {
+      // Show error message
+      const errorMsg: ChatMessage = {
+        id: messageIdRef.current++,
+        type: 'ai',
+        message: result.error || 'Sorry, I encountered an error. Please try again.',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      setChatMessages(prev => [...prev, errorMsg]);
     }
-  ];
+
+    setLoading(false);
+  };
+
+  const handleQuickPrompt = (prompt: string) => {
+    setMessage(prompt);
+  };
 
   return (
     <KeyboardAvoidingView 
@@ -66,19 +107,19 @@ export default function MetyAIScreen() {
       <ThemedView style={styles.quickActionsSection}>
         <ThemedText style={styles.sectionTitle}>Quick Help</ThemedText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.quickActions}>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.accent }]}>
+          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.accent }]} onPress={() => handleQuickPrompt('Ask me a question')}>
             <IconSymbol name="questionmark.circle.fill" size={24} color="white" />
             <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Ask Question</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.secondary }]}>
+          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.secondary }]} onPress={() => handleQuickPrompt('Create a study schedule')}>
             <IconSymbol name="calendar" size={24} color="white" />
             <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Study Plan</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.warning }]}>
+          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.warning }]} onPress={() => handleQuickPrompt('Summarize this topic')}>
             <IconSymbol name="doc.text" size={24} color="white" />
             <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Summarize</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.primary }]}>
+          <TouchableOpacity style={[styles.quickActionCard, { backgroundColor: colors.primary }]} onPress={() => handleQuickPrompt('Explain this concept')}>
             <IconSymbol name="lightbulb.fill" size={24} color="white" />
             <ThemedText style={[styles.quickActionText, { color: 'white' }]}>Explain</ThemedText>
           </TouchableOpacity>
@@ -86,7 +127,12 @@ export default function MetyAIScreen() {
       </ThemedView>
 
       {/* Chat Messages */}
-      <ScrollView style={styles.chatContainer} showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        ref={scrollViewRef}
+        style={styles.chatContainer} 
+        showsVerticalScrollIndicator={false}
+        onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
+      >
         {chatMessages.map((msg) => (
           <View key={msg.id} style={[
             styles.messageContainer,
@@ -133,7 +179,7 @@ export default function MetyAIScreen() {
             <TouchableOpacity 
               key={index}
               style={[styles.promptCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
-              onPress={() => setMessage(prompt)}
+              onPress={() => handleQuickPrompt(prompt)}
             >
               <ThemedText style={[styles.promptText, { color: colors.text }]}>{prompt}</ThemedText>
             </TouchableOpacity>
@@ -151,9 +197,18 @@ export default function MetyAIScreen() {
             value={message}
             onChangeText={setMessage}
             multiline
+            editable={!loading}
           />
-          <TouchableOpacity style={[styles.sendButton, { backgroundColor: colors.primary }]}>
-            <IconSymbol name="paperplane.fill" size={20} color="white" />
+          <TouchableOpacity 
+            style={[styles.sendButton, { backgroundColor: loading ? colors.icon : colors.primary }]}
+            onPress={handleSendMessage}
+            disabled={loading || !message.trim()}
+          >
+            {loading ? (
+              <ActivityIndicator color="white" size="small" />
+            ) : (
+              <IconSymbol name="paperplane.fill" size={20} color="white" />
+            )}
           </TouchableOpacity>
         </View>
       </ThemedView>
